@@ -5,6 +5,7 @@ from dronekit import connect, VehicleMode, Vehicle, LocationGlobalRelative
 from pymavlink import mavutil
 import dronekit_sitl
 from coms import Coms
+from util import get_distance_metres
 
 class Tee():
     '''Writes to all file objects'''
@@ -125,7 +126,7 @@ class VTOL(Vehicle):
             time.sleep(1)
 
         print("Taking off")
-        altitude = self.configs['altitude']
+        altitude = self.configs['initialAltitude']
         self.simple_takeoff(altitude)  # take off to altitude
 
         # Wait until vehicle reaches minimum altitude
@@ -146,18 +147,18 @@ class VTOL(Vehicle):
 
     def land(self):
         '''Commands vehicle to land'''
-        print("Returning to launch")
-        if self.configs["vehicle_type"] == "VTOL":
-            self.mode = VehicleMode("QRTL")
-        elif self.configs["vehicle_type"] == "Quadcopter":
-            self.mode = VehicleMode("RTL")
+        self.mode = VehicleMode("LAND")
 
-        # Wait until vehicle reaches ground
-        while not self.location.global_relative_frame.alt < 1.0:
+        print("Landing...")
+
+        while self.location.global_relative_frame.alt > 0:
             print("Altitude: " + str(self.location.global_relative_frame.alt))
             time.sleep(1)
-        time.sleep(10)
-        self.close()
+
+        print("Landed")
+
+        print("Sleeping...")
+        time.sleep(5)
 
 
     def change_status(self, new_status):
