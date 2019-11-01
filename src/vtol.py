@@ -145,6 +145,17 @@ class VTOL(Vehicle):
             time.sleep(1)
         print("Altitude reached")
 
+    def go_to(self, point) :
+        destination = point
+
+        self.simple_goto(destination, self.configs["air_speed"])
+
+        while (get_distance_metres(self.location.global_relative_frame, destination) > 1) :
+            print("Distance remaining:", get_distance_metres(self.location.global_relative_frame, destination))
+            time.sleep(1)
+
+        print("Target reached")
+        
     def land(self):
         '''Commands vehicle to land'''
         self.mode = VehicleMode("LAND")
