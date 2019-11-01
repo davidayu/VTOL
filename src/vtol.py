@@ -1,7 +1,7 @@
 '''Automous tools for VTOL'''
 import time
 import json
-from dronekit import connect, VehicleMode, Vehicle
+from dronekit import connect, VehicleMode, Vehicle, LocationGlobalRelative
 from pymavlink import mavutil
 import dronekit_sitl
 from coms import Coms
@@ -135,6 +135,14 @@ class VTOL(Vehicle):
 
         print("Reached target altitude")
 
+    def setAltitude(self, alt) :
+        print("Setting altitude:")
+        destination = LocationGlobalRelative(self.location.global_relative_frame.lat, self.location.global_relative_frame.lon, alt)
+        self.simple_goto(destination)
+        while abs(self.location.global_relative_frame.alt - alt) > 0.5 :
+            print("Altitude: " + str(self.location.global_relative_frame.alt))
+            time.sleep(1)
+        print("Altitude reached")
 
     def land(self):
         '''Commands vehicle to land'''

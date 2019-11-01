@@ -11,6 +11,8 @@ def main(configs):
     print(vehicle.location.global_relative_frame)
 
     vehicle.takeoff()
+
+    vehicle.setAltitude(3)
     
     point1 = LocationGlobalRelative(35.3284237, -120.7530046, 9.94)
 
