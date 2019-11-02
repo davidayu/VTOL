@@ -126,6 +126,7 @@ class VTOL(Vehicle):
             time.sleep(1)
 
         print("Taking off")
+
         altitude = self.configs['initialAltitude']
         self.simple_takeoff(altitude)  # take off to altitude
 
@@ -136,26 +137,27 @@ class VTOL(Vehicle):
 
         print("Reached target altitude")
 
-    def setAltitude(self, alt) :
+    def set_altitude(self, alt):
+        '''Sets altitude of quadcopter using an "alt" parameter'''
         print("Setting altitude:")
         destination = LocationGlobalRelative(self.location.global_relative_frame.lat, self.location.global_relative_frame.lon, alt)
         self.simple_goto(destination)
-        while abs(self.location.global_relative_frame.alt - alt) > 0.5 :
+        while abs(self.location.global_relative_frame.alt - alt) > 0.5:
             print("Altitude: " + str(self.location.global_relative_frame.alt))
             time.sleep(1)
         print("Altitude reached")
 
-    def go_to(self, point) :
+    def go_to(self, point):
+        '''Commands drone to fly to a specified point perform a simple_goto '''
         destination = point
 
         self.simple_goto(destination, self.configs["air_speed"])
 
-        while (get_distance_metres(self.location.global_relative_frame, destination) > 1) :
+        while get_distance_metres(self.location.global_relative_frame, destination) > 1:
             print("Distance remaining:", get_distance_metres(self.location.global_relative_frame, destination))
             time.sleep(1)
-
         print("Target reached")
-        
+
     def land(self):
         '''Commands vehicle to land'''
         self.mode = VehicleMode("LAND")
