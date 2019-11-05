@@ -7,7 +7,9 @@
   "dest": {
     "lat": 35.3284237,
     "long": -120.7530046,
-    "alt": 9.94
+    "lat_long_margin_of_error": 1,
+    "alt": 9.94,
+    "alt_margin_of_error" : 0.5
   },
   "3dr_solo": false,
   "cv_simulated": {
@@ -16,7 +18,7 @@
   },
   "mission_control_MAC": "0013A200409BD79C",
   "baud_rate": 57600,
-  "initialAltitude": 10,
+  "altitude": 10,
   "air_speed": 30,
   "waypoint_tolerance": 3
 }

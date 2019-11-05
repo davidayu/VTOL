@@ -127,7 +127,7 @@ class VTOL(Vehicle):
 
         print("Taking off")
 
-        altitude = self.configs['initialAltitude']
+        altitude = self.configs['altitude']
         self.simple_takeoff(altitude)  # take off to altitude
 
         # Wait until vehicle reaches minimum altitude
@@ -142,7 +142,7 @@ class VTOL(Vehicle):
         print("Setting altitude:")
         destination = LocationGlobalRelative(self.location.global_relative_frame.lat, self.location.global_relative_frame.lon, alt)
         self.simple_goto(destination)
-        while abs(self.location.global_relative_frame.alt - alt) > 0.5:
+        while abs(self.location.global_relative_frame.alt - alt) > self.configs['dest']['alt_margin_of_error']:
             print("Altitude: " + str(self.location.global_relative_frame.alt))
             time.sleep(1)
         print("Altitude reached")
@@ -153,7 +153,7 @@ class VTOL(Vehicle):
 
         self.simple_goto(destination, self.configs["air_speed"])
 
-        while get_distance_metres(self.location.global_relative_frame, destination) > 1:
+        while get_distance_metres(self.location.global_relative_frame, destination) > self.configs['dest']['lat_long_margin_of_error']:
             print("Distance remaining:", get_distance_metres(self.location.global_relative_frame, destination))
             time.sleep(1)
         print("Target reached")
