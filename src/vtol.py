@@ -137,23 +137,13 @@ class VTOL(Vehicle):
 
         print("Reached target altitude")
 
-    def set_altitude(self, alt):
-        '''Sets altitude of quadcopter using an "alt" parameter'''
-        print("Setting altitude:")
-        destination = LocationGlobalRelative(self.location.global_relative_frame.lat, self.location.global_relative_frame.lon, alt)
-        self.simple_goto(destination)
-        while abs(self.location.global_relative_frame.alt - alt) > self.configs['dest']['alt_margin_of_error']:
-            print("Altitude: " + str(self.location.global_relative_frame.alt))
-            time.sleep(1)
-        print("Altitude reached")
-
     def go_to(self, point):
         '''Commands drone to fly to a specified point perform a simple_goto '''
         destination = point
 
         self.simple_goto(destination, self.configs["air_speed"])
 
-        while get_distance_metres(self.location.global_relative_frame, destination) > self.configs['dest']['lat_long_margin_of_error']:
+        while get_distance_metres(self.location.global_relative_frame, destination) > self.configs['lat_long_margin_of_error']:
             print("Distance remaining:", get_distance_metres(self.location.global_relative_frame, destination))
             time.sleep(1)
         print("Target reached")
@@ -173,6 +163,15 @@ class VTOL(Vehicle):
         print("Sleeping...")
         time.sleep(5)
 
+    def set_altitude(self, alt):
+        '''Sets altitude of quadcopter using an "alt" parameter'''
+        print("Setting altitude:")
+        destination = LocationGlobalRelative(self.location.global_relative_frame.lat, self.location.global_relative_frame.lon, alt)
+        self.go_to(destination)
+        while abs(self.location.global_relative_frame.alt - alt) > self.configs['alt_margin_of_error']:
+            print("Altitude: " + str(self.location.global_relative_frame.alt))
+            time.sleep(1)
+        print("Altitude reached")
 
     def change_status(self, new_status):
         ''':param new_status: new vehicle status to change to (refer to GCS formatting)'''
