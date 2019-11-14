@@ -143,9 +143,13 @@ class VTOL(Vehicle):
 
         self.simple_goto(destination, self.configs["air_speed"])
 
-        while get_distance_metres(self.location.global_relative_frame, destination) > self.configs['lat_long_margin_of_error']:
-            print("Distance remaining:", get_distance_metres(self.location.global_relative_frame, destination))
-            time.sleep(1)
+        while True:
+            distance = get_distance_metres(self.location.global_relative_frame, destination)
+            if distance > self.configs['lat_long_margin_of_error']:
+                print("Distance remaining:", distance)
+                time.sleep(1)
+            else:
+                break
         print("Target reached")
 
     def land(self):
@@ -168,9 +172,6 @@ class VTOL(Vehicle):
         print("Setting altitude:")
         destination = LocationGlobalRelative(self.location.global_relative_frame.lat, self.location.global_relative_frame.lon, alt)
         self.go_to(destination)
-        while abs(self.location.global_relative_frame.alt - alt) > self.configs['alt_margin_of_error']:
-            print("Altitude: " + str(self.location.global_relative_frame.alt))
-            time.sleep(1)
         print("Altitude reached")
 
     def change_status(self, new_status):
@@ -214,3 +215,4 @@ class VTOL(Vehicle):
             self.coms.send_till_ack(address, update_message, update_message['id'])
             time.sleep(1)
         self.change_status("ready")
+        
