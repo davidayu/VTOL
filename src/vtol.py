@@ -68,8 +68,27 @@ class VTOL(Vehicle):
     coms = None
 
     # pylint: disable=no-self-use
-    def coms_callback(self, message, _):
+    def coms_callback(self, message):
         '''callback for radio messages'''
+        parsed_message = json.loads(message.data)
+        #tuple of commands that can be executed
+        valid_commands = ("takeoff", "RTL")
+        #gives us the specific command we want the drone to executre
+        command = parsed_message['type']
+
+        print('Recieved message type:', type(parsed_message['type']))
+
+        #checking for valid command
+        if command not in valid_commands:
+            raise Exception("Error: Unsupported status for vehicle")
+
+        #executes takeoff command to drone
+        if command == 'takeoff':
+            self.takeoff()
+        #executes land command to drone
+        elif command == 'land':
+            self.land()
+
         # TODO respond to xbee messagge
         data = json.loads(message.data)
         print(data['type'])
