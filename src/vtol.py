@@ -68,7 +68,7 @@ class VTOL(Vehicle):
     coms = None
 
     # pylint: disable=no-self-use
-    def coms_callback(self, message, _):
+    def coms_callback(self, message):
         '''callback for radio messages'''
         # TODO respond to xbee messagge
         data = json.loads(message.data)
