@@ -1,5 +1,6 @@
 {
-  "vehicle_type": "Quadcopter",
+  "vehicle_type": "VTOL",
+  
   "vehicle_id": 1,
   "vehicle_simulated": true,
   "coms_simulated": true,
