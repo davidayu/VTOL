@@ -7,6 +7,20 @@ import dronekit_sitl
 from coms import Coms
 from util import get_distance_metres
 
+class Tee():
+    '''Writes to all file objects'''
+    def __init__(self, *files):
+        self.files = files
+
+    def write(self, obj):
+        '''writes files'''
+        for file in self.files:
+            file.write(obj)
+
+    def flush(self):
+        '''flushes files'''
+        for file in self.files:
+            file.flush()
 
 def setup_vehicle(configs):
     '''Sets up self as a vehicle'''
