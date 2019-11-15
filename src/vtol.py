@@ -139,13 +139,12 @@ class VTOL(Vehicle):
 
     def go_to(self, point):
         '''Commands drone to fly to a specified point perform a simple_goto '''
-        destination = point
-
-        self.simple_goto(destination, self.configs["air_speed"])
+        
+        self.simple_goto(point, self.configs["air_speed"])
 
         while True:
-            distance = get_distance_metres(self.location.global_relative_frame, destination)
-            if distance > self.configs['lat_long_margin_of_error']:
+            distance = get_distance_metres(self.location.global_relative_frame, point)
+            if distance > self.configs['waypoint_tolerance']:
                 print("Distance remaining:", distance)
                 time.sleep(1)
             else:
