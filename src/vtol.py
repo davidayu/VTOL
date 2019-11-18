@@ -7,21 +7,6 @@ import dronekit_sitl
 from coms import Coms
 from util import get_distance_metres
 
-class Tee():
-    '''Writes to all file objects'''
-    def __init__(self, *files):
-        self.files = files
-
-    def write(self, obj):
-        '''writes files'''
-        for file in self.files:
-            file.write(obj)
-
-    def flush(self):
-        '''flushes files'''
-        for file in self.files:
-            file.flush()
-
 def setup_vehicle(configs):
     '''Sets up self as a vehicle'''
     #Start SITL if vehicle is being simulated
@@ -158,7 +143,7 @@ class VTOL(Vehicle):
 
     def go_to(self, point):
         '''Commands drone to fly to a specified point perform a simple_goto '''
-        
+
         self.simple_goto(point, self.configs["air_speed"])
 
         while True:
@@ -188,7 +173,8 @@ class VTOL(Vehicle):
     def set_altitude(self, alt):
         '''Sets altitude of quadcopter using an "alt" parameter'''
         print("Setting altitude:")
-        destination = LocationGlobalRelative(self.location.global_relative_frame.lat, self.location.global_relative_frame.lon, alt)
+        destination = LocationGlobalRelative(self.location.global_relative_frame.lat, \
+            self.location.global_relative_frame.lon, alt)
         self.go_to(destination)
         print("Altitude reached")
 
@@ -233,4 +219,3 @@ class VTOL(Vehicle):
             self.coms.send_till_ack(address, update_message, update_message['id'])
             time.sleep(1)
         self.change_status("ready")
-        
